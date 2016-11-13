@@ -126,6 +126,9 @@ function render() {
     // GAME -------------------------------------
 
     // clear stuff
+    $('#textbox').removeClass('bad-attempt');
+    $('.tag').remove();
+    $('#textbox').attr('disabled', false);
     $("#allowed-letters").empty();
     $("#word-submissions").empty();
     // TODO 10
@@ -141,7 +144,8 @@ function render() {
 
     // TODO 11
     // Render the word submissions
-
+    var wordSubmissionChips = model.wordSubmissions.map(wordSubmissionChip)
+    $('#word-submissions').append(wordSubmissionChips);
 
     // Set the value of the textbox
     $("#textbox").val(model.currentAttempt);
@@ -160,6 +164,7 @@ function render() {
 
         // TODO 8
         // append the red letter chips to the form
+        $('#word-attempt-form').append(redLetterChips);
 
     }
 
@@ -168,7 +173,7 @@ function render() {
     if (gameOver) {
         // TODO 9
         // disable the text box and clear its contents
-
+        $('#textbox').attr('disabled', true).val('');
     }
 }
 
@@ -242,11 +247,10 @@ $(document).ready(function() {
     // Add another event handler with a callback function.
     // When the textbox content changes,
     // update the .currentAttempt property of the model and re-render
-    $('#textbox').on(function(callback, 'input') {
+    $('#textbox').on('input', function() {
         model.currentAttempt = $('#textbox').val();
-        callback();
         render();
-    })
+    });
 
     // when the form is submitted
     $("#word-attempt-form").submit(function(evt) {
@@ -281,6 +285,10 @@ var scrabblePointsForEachLetter = {
  * meaning it is not a member of the .allowedLetters list from the current model
  */
 function isDisallowedLetter(letter) {
+    var letterValue = model.allowedLetters.indexOf(letter);
+    if (letterValue === -1) {
+        return true;
+    }
     // TODO 7
     // This should return true if the letter is not an element of
     // the .allowedLetters list in the model
