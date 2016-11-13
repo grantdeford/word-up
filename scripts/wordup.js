@@ -115,7 +115,7 @@ function render() {
 
     // TODO 2
     // Update the curent time remaining on the scoreboard.
-
+    $('#time-remaining').text(model.secondsRemaining);
 
     // if the game has not started yet, just hide the #game container and exit
     if (model.gameHasStarted == false) {
@@ -147,7 +147,7 @@ function render() {
     $("#textbox").val(model.currentAttempt);
     // TODO 3
     // Give focus to the textbox.
-
+    $('#textbox').focus();
 
     // if the current word attempt contains disallowed letters,
     var disallowedLetters = disallowedLettersInWord(model.currentAttempt);
@@ -242,7 +242,11 @@ $(document).ready(function() {
     // Add another event handler with a callback function.
     // When the textbox content changes,
     // update the .currentAttempt property of the model and re-render
-
+    $('#textbox').on(function(callback, 'input') {
+        model.currentAttempt = $('#textbox').val();
+        callback();
+        render();
+    })
 
     // when the form is submitted
     $("#word-attempt-form").submit(function(evt) {
