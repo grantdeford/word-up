@@ -54,9 +54,9 @@ function addNewWordSubmission(word) {
     // TODO 21
     // replace the hardcoded 'false' with the real answer
 
-
+    // && alreadyUsed == false
     // if the word is valid and hasn't already been used, add it
-    if (containsOnlyAllowedLetters(word) && alreadyUsed == false) {
+    if (containsOnlyAllowedLetters(word)) {
         model.wordSubmissions.push({ word: word });
         // and now we must also determine whether this is actually a real word
         checkIfWordIsReal(word);
@@ -74,7 +74,7 @@ function checkIfWordIsReal(word) {
     // make an AJAX call to the Pearson API
     $.ajax({
         // TODO 13 what should the url be?
-        url: "www.todo13.com",
+        url: "http://api.pearson.com/v2/dictionaries/lasde/entries?headwords" + word,
         success: function(response) {
             console.log("We received a response from Pearson!");
 
@@ -85,11 +85,28 @@ function checkIfWordIsReal(word) {
             // Replace the 'true' below.
             // If the response contains any results, then the word is legitimate.
             // Otherwise, it is not.
-            var theAnswer = true;
+            var theAnswer = '';
+            if (response.results.length > 0) {
+                theAnswer = true;
+                //console.log('word here');
+            }
+            else {
+                theAnswer = false;
+                //.log('Not wordhere');
+            };
 
-            // TODO 15
-            // Update the corresponding wordSubmission in the model
+            // // TODO 15
+            // // Update the corresponding wordSubmission in the model
+            model.wordSubmissions.forEach(function(submission) {
+                if (!(submission.hasOwnProperty('isRealWord'))) {
+                    if (response.length > 0) {
+                        {submission.isRealWord = 'true';}
+                    }else {
+                        {submission.isRealWord = 'false';}
+                    }
 
+
+            }});
 
             // re-render
             render();
@@ -127,7 +144,7 @@ function render() {
 
     // clear stuff
     $('#textbox').removeClass('bad-attempt');
-    $('.tag').remove();
+    $('.disallowed-letter').remove();
     $('#textbox').attr('disabled', false);
     $("#allowed-letters").empty();
     $("#word-submissions").empty();
@@ -144,7 +161,7 @@ function render() {
 
     // TODO 11
     // Render the word submissions
-    var wordSubmissionChips = model.wordSubmissions.map(wordSubmissionChip)
+    var wordSubmissionChips = model.wordSubmissions.map(wordSubmissionChip);
     $('#word-submissions').append(wordSubmissionChips);
 
     // Set the value of the textbox
@@ -210,13 +227,13 @@ function wordSubmissionChip(wordSubmission) {
         var scoreChip = $("<span></span>").text("⟐");
         // TODO 17
         // give the scoreChip appropriate text content
-
+        scoreChip.append(wordScore);
         // TODO 18
         // give the scoreChip appropriate css classes
-
+        scoreChip.addClass('tag tag-sm tag-primary');
         // TODO 16
         // append scoreChip into wordChip
-
+        wordChip.append(scoreChip);
     }
 
     return wordChip;
@@ -311,7 +328,13 @@ function disallowedLettersInWord(word) {
 function containsOnlyAllowedLetters(word) {
     // TODO 12
     // Return the actual answer.
-    return true;
+    //$('#textbox').filter(disallowedLettersInWord(0);
+    if (disallowedLettersInWord(word).length > 0) {
+        return false
+    }
+    else {
+        return true
+    };
 }
 
 /**
