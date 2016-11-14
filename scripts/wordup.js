@@ -222,18 +222,21 @@ function wordSubmissionChip(wordSubmission) {
         var scoreChip = $("<span></span>").text("⟐");
         // TODO 17
         // give the scoreChip appropriate text content
+        //var scoreNotation = wordScore(wordSubmission.word);
         if (wordSubmission.isRealWord === true) {
-            wordScore(wordSubmission.word).text('wordScore');
-            .addClass('tag-sm' 'tag-primary');
+
+            //.text(scoreNotation)
+            $(scoreChip).text(wordScore(wordSubmission.word))
+            $(scoreChip).addClass('tag tag-sm tag-primary');
         }
         else {
-            .text('X')
-            .addClass('tag-sm' 'tag-danger');
+            $(scoreChip).text('X')
+            $(scoreChip).addClass('tag tag-sm tag-danger');
         }
-        //scoreChip.append(wordScore);
+
         // TODO 18
         // give the scoreChip appropriate css classes
-        //scoreChip.addClass('tag tag-sm tag-primary');
+
         // TODO 16
         // append scoreChip into wordChip
         wordChip.append(scoreChip);
