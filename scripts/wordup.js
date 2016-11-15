@@ -55,10 +55,13 @@ function addNewWordSubmission(word) {
     // replace the hardcoded 'false' with the real answer
     var alreadyUsed = false;
 
+<<<<<<< HEAD
     if (model.wordSubmissions.indexOf(word) !== -1) {
         alreadyUsed = true;
     }
     //
+=======
+>>>>>>> df7cb7c002db37236acbc40d514704266bb08ef7
     // if the word is valid and hasn't already been used, add it
     if (containsOnlyAllowedLetters(word) && alreadyUsed == false) {
         model.wordSubmissions.push({ word: word });
