@@ -53,11 +53,16 @@ function addNewWordSubmission(word) {
     // Do we already have a wordSubmission with this word?
     // TODO 21
     // replace the hardcoded 'false' with the real answer
+    var alreadyUsed = false;
 
-    // && alreadyUsed == false
+    if (model.wordSubmissions.indexOf(word) !== -1) {
+        alreadyUsed = true;
+    }
+    //
     // if the word is valid and hasn't already been used, add it
-    if (containsOnlyAllowedLetters(word)) {
+    if (containsOnlyAllowedLetters(word) && alreadyUsed == false) {
         model.wordSubmissions.push({ word: word });
+        console.log("push should have fired")
         // and now we must also determine whether this is actually a real word
         checkIfWordIsReal(word);
     }
